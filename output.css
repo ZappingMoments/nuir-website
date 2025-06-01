@@ -2079,6 +2079,18 @@ select {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .xl\:flex-row {
+    flex-direction: row;
+  }
+
+  .xl\:items-center {
+    align-items: center;
+  }
+
+  .xl\:justify-between {
+    justify-content: space-between;
+  }
+
   .xl\:gap-8 {
     gap: 2rem;
   }
