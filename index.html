@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nuir - Aplicação Social para Eventos e Conexões</title>
+    <link href="output.css" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="nuir.svg" />
+    <script
+      defer
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <script>
+      document.addEventListener("alpine:init", () => {
+        Alpine.data("pulsingCircles", () => ({
+          init() {
+            // Nothing to initialize
+          },
+        }));
+      });
+    </script>
+    <style>
+      @keyframes pulse-radar {
+        0% {
+          transform: scale(1);
+          opacity: 0.5;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 0.7;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0.5;
+        }
+      }
+
+      .animate-pulse-1 {
+        animation: pulse-radar 3s infinite ease-in-out;
+      }
+      .animate-pulse-2 {
+        animation: pulse-radar 4s infinite ease-in-out 0.5s;
+      }
+      .animate-pulse-3 {
+        animation: pulse-radar 5s infinite ease-in-out 1s;
+      }
+      .animate-pulse-4 {
+        animation: pulse-radar 4.5s infinite ease-in-out 1.5s;
+      }
+      .animate-pulse-5 {
+        animation: pulse-radar 3.5s infinite ease-in-out 2s;
+      }
+
+      @keyframes wiggle {
+        0%,
+        100% {
+          transform: rotate(-3deg);
+        }
+        50% {
+          transform: rotate(3deg);
+        }
+      }
+
+      .hover-wiggle:hover {
+        animation: wiggle 0.5s ease-in-out;
+      }
+
+      .waiting-badge {
+        background: linear-gradient(90deg, #ffa500, #ff6347, #ffa500);
+        background-size: 200% 200%;
+        animation: gradient-animation 2s ease infinite;
+      }
+
+      @keyframes gradient-animation {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+    </style>
+  </head>
+  <body class="font-sans bg-orange-50">
+    <!-- Header and Hero with shared background -->
+    <div class="relative overflow-hidden">
+      <!-- Textured background with overlay for both header and hero -->
+      <div class="absolute inset-0 z-0">
+        <!-- Base gradient -->
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-orange-500 to-orange-600"
+        ></div>
+
+        <!-- Texture overlay - circles representing social gatherings -->
+        <div class="absolute inset-0 opacity-10" x-data="pulsingCircles">
+          <div
+            class="absolute h-40 w-40 rounded-full top-10 left-10 animate-pulse-1 bg-white overflow-hidden"
+          >
+            <div
+              class="absolute inset-0 opacity-40 mix-blend-overlay"
+              style="
+                background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQiIGhlaWdodD0iNCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDAgTCA0IDAgTCA0IDQgTCAwIDQgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjAuNSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSJ1cmwoI2dyaWQpIiAvPjwvc3ZnPg==');
+                background-size: 12px 12px;
+              "
+            ></div>
+          </div>
+
+          <div
+            class="absolute h-64 w-64 rounded-full top-20 right-20 animate-pulse-2 bg-white overflow-hidden"
+          >
+            <div
+              class="absolute inset-0 opacity-40 mix-blend-overlay"
+              style="
+                background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSIjZmZmIj48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMiIgaGVpZ2h0PSIyIiAvPjxyZWN0IHg9IjEwIiB5PSIxMCIgd2lkdGg9IjIiIGhlaWdodD0iMiIgLz48cmVjdCB4PSIyMCIgeT0iMjAiIHdpZHRoPSIyIiBoZWlnaHQ9IjIiIC8+PHJlY3QgeD0iMzAiIHk9IjMwIiB3aWR0aD0iMiIgaGVpZ2h0PSIyIiAvPjxyZWN0IHg9IjQwIiB5PSI0MCIgd2lkdGg9IjIiIGhlaWdodD0iMiIgLz48cmVjdCB4PSI1IiB5PSI0MCIgd2lkdGg9IjIiIGhlaWdodD0iMiIgLz48cmVjdCB4PSIxNSIgeT0iMzAiIHdpZHRoPSIyIiBoZWlnaHQ9IjIiIC8+PHJlY3QgeD0iMjUiIHk9IjIwIiB3aWR0aD0iMiIgaGVpZ2h0PSIyIiAvPjxyZWN0IHg9IjM1IiB5PSIxMCIgd2lkdGg9IjIiIGhlaWdodD0iMiIgLz48cmVjdCB4PSI0NSIgeT0iMCIgd2lkdGg9IjIiIGhlaWdodD0iMiIgLz48L2c+PC9zdmc+');
+                background-size: 40px 40px;
+              "
+            ></div>
+          </div>
+
+          <div
+            class="absolute h-32 w-32 rounded-full bottom-10 left-1/4 animate-pulse-3 bg-white overflow-hidden"
+          >
+            <div
+              class="absolute inset-0 opacity-40 mix-blend-overlay"
+              style="
+                background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHZpZXdCb3g9IjAgMCAzMCAzMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSIjZmZmIj48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMyIgaGVpZ2h0PSIzIiAvPjxyZWN0IHg9IjYiIHk9IjYiIHdpZHRoPSIzIiBoZWlnaHQ9IjMiIC8+PHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iMyIgaGVpZ2h0PSIzIiAvPjxyZWN0IHg9IjE4IiB5PSIxOCIgd2lkdGg9IjMiIGhlaWdodD0iMyIgLz48cmVjdCB4PSIyNCIgeT0iMjQiIHdpZHRoPSIzIiBoZWlnaHQ9IjMiIC8+PHJlY3QgeD0iNiIgeT0iMjQiIHdpZHRoPSIzIiBoZWlnaHQ9IjMiIC8+PHJlY3QgeD0iMjQiIHk9IjYiIHdpZHRoPSIzIiBoZWlnaHQ9IjMiIC8+PC9nPjwvc3ZnPg==');
+                background-size: 24px 24px;
+                transform: rotate(30deg);
+              "
+            ></div>
+          </div>
+
+          <div
+            class="absolute h-56 w-56 rounded-full -bottom-20 right-1/3 animate-pulse-4 bg-white overflow-hidden"
+          >
+            <div
+              class="absolute inset-0 opacity-40 mix-blend-overlay"
+              style="
+                background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSIjZmZmIj48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iNCIgaGVpZ2h0PSI0IiAvPjxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSI0IiBoZWlnaHQ9IjQiIC8+PHJlY3QgeD0iMTYiIHk9IjE2IiB3aWR0aD0iNCIgaGVpZ2h0PSI0IiAvPjxyZWN0IHg9IjI0IiB5PSIyNCIgd2lkdGg9IjQiIGhlaWdodD0iNCIgLz48cmVjdCB4PSIzMiIgeT0iMzIiIHdpZHRoPSI0IiBoZWlnaHQ9IjQiIC8+PHJlY3QgeD0iMCIgeT0iMTYiIHdpZHRoPSI0IiBoZWlnaHQ9IjQiIC8+PHJlY3QgeD0iMTYiIHk9IjAiIHdpZHRoPSI0IiBoZWlnaHQ9IjQiIC8+PHJlY3QgeD0iMzIiIHk9IjE2IiB3aWR0aD0iNCIgaGVpZ2h0PSI0IiAvPjxyZWN0IHg9IjE2IiB5PSIzMiIgd2lkdGg9IjQiIGhlaWdodD0iNCIgLz48L2c+PC9zdmc+');
+                background-size: 36px 36px;
+                transform: rotate(15deg);
+              "
+            ></div>
+          </div>
+
+          <div
+            class="absolute h-48 w-48 rounded-full -top-10 left-1/3 animate-pulse-5 bg-white overflow-hidden"
+          >
+            <div
+              class="absolute inset-0 opacity-40 mix-blend-overlay"
+              style="
+                background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSIjZmZmIj48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMyIgaGVpZ2h0PSIzIiAvPjxyZWN0IHg9IjEwIiB5PSIwIiB3aWR0aD0iMyIgaGVpZ2h0PSIzIiAvPjxyZWN0IHg9IjIwIiB5PSIwIiB3aWR0aD0iMyIgaGVpZ2h0PSIzIiAvPjxyZWN0IHg9IjMwIiB5PSIwIiB3aWR0aD0iMyIgaGVpZ2h0PSIzIiAvPjxyZWN0IHg9IjUiIHk9IjEwIiB3aWR0aD0iMyIgaGVpZ2h0PSIzIiAvPjxyZWN0IHg9IjE1IiB5PSIxMCIgd2lkdGg9IjMiIGhlaWdodD0iMyIgLz48cmVjdCB4PSIyNSIgeT0iMTAiIHdpZHRoPSIzIiBoZWlnaHQ9IjMiIC8+PHJlY3QgeD0iMzUiIHk9IjEwIiB3aWR0aD0iMyIgaGVpZ2h0PSIzIiAvPjxyZWN0IHg9IjAiIHk9IjIwIiB3aWR0aD0iMyIgaGVpZ2h0PSIzIiAvPjxyZWN0IHg9IjEwIiB5PSIyMCIgd2lkdGg9IjMiIGhlaWdodD0iMyIgLz48cmVjdCB4PSIyMCIgeT0iMjAiIHdpZHRoPSIzIiBoZWlnaHQ9IjMiIC8+PHJlY3QgeD0iMzAiIHk9IjIwIiB3aWR0aD0iMyIgaGVpZ2h0PSIzIiAvPjxyZWN0IHg9IjUiIHk9IjMwIiB3aWR0aD0iMyIgaGVpZ2h0PSIzIiAvPjxyZWN0IHg9IjE1IiB5PSIzMCIgd2lkdGg9IjMiIGhlaWdodD0iMyIgLz48cmVjdCB4PSIyNSIgeT0iMzAiIHdpZHRoPSIzIiBoZWlnaHQ9IjMiIC8+PHJlY3QgeD0iMzUiIHk9IjMwIiB3aWR0aD0iMyIgaGVpZ2h0PSIzIiAvPjwvZz48L3N2Zz4=');
+                background-size: 32px 32px;
+                transform: rotate(-10deg);
+              "
+            ></div>
+          </div>
+        </div>
+
+        <!-- Noise texture for added depth -->
+        <div
+          class="absolute inset-0 opacity-30 mix-blend-overlay bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMjAwdjIwMEgweiIgZmlsbD0iI2ZmZiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')]"
+        ></div>
+      </div>
+
+      <!-- Header -->
+      <header class="relative z-10 py-4 text-white">
+        <div class="max-w-5xl mx-auto px-6 flex justify-between items-center">
+          <div class="flex items-center gap-2">
+            <img src="nuir.svg" alt="Nuir Logo" class="h-8 w-8" />
+            <span class="font-bold text-xl">nuir</span>
+          </div>
+          <nav class="flex gap-6">
+            <a href="#funcoes" class="font-medium hover:text-orange-200"
+              >Funções</a
+            >
+            <a href="#app" class="font-medium hover:text-orange-200">App</a>
+            <a href="#company" class="font-medium hover:text-orange-200"
+              >Empresa</a
+            >
+          </nav>
+        </div>
+      </header>
+
+      <!-- Hero Section -->
+      <section class="relative z-10 py-16 md:py-20 text-white">
+        <div class="max-w-5xl mx-auto px-6">
+          <div class="md:w-8/12 mx-auto items-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-center mb-6">
+              Conecta-te 🤝 e partilha momentos reais 🫂
+            </h1>
+            <p class="text-xl text-center mb-8">
+              Descobre um mundo de conexões genuínas, explora eventos
+              inesquecíveis e constrói momentos inesquecíveis.
+            </p>
+            <div class="flex flex-row justify-center gap-4">
+              <button
+                class="relative border-4 border-transparent bg-white/80 text-orange-600 px-3 py-2 rounded-xl font-semibold hover:bg-orange-100 group"
+              >
+                <div class="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 mr-2 transition-transform duration-300 ease-in-out group-hover:-translate-y-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
+                  </svg>
+                  <span>Descarregar para iOS</span>
+                </div>
+                <div class="absolute -top-3 -right-3">
+                  <div
+                    class="waiting-badge text-white text-xs font-bold py-1 px-2 rounded-bl-lg rounded-tr-lg transform rotate-12 hover-wiggle shadow-md"
+                  >
+                    Em breve
+                  </div>
+                </div>
+              </button>
+              <button
+                class="relative border-4 border-transparent bg-white/80 text-orange-600 px-3.5 py-2 rounded-xl font-semibold hover:bg-orange-100 group"
+              >
+                <div class="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 mr-2 transition-transform duration-300 ease-in-out group-hover:-translate-y-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
+                  </svg>
+                  <span>Descarregar para Android</span>
+                </div>
+                <div class="absolute -top-3 -right-3">
+                  <div
+                    class="waiting-badge text-white text-xs font-bold py-1 px-2 rounded-bl-lg rounded-tr-lg transform rotate-12 hover-wiggle shadow-md"
+                  >
+                    Em breve
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div class="flex items-center justify-center gap-8 lg:gap-12 mt-12">
+              <p class="text-sm font-medium">Apoiados pelos nossos parceiros</p>
+
+              <!-- Ponta Logo -->
+              <a href="https://www.na-ponta-da-lingua.pt/" target="_blank">
+                <img
+                  src="ponta.svg"
+                  alt="Ponta Digital"
+                  class="h-14 w-auto transition-opacity duration-300 filter brightness-0 invert hover:brightness-100 hover:invert-0"
+              /></a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Features Section -->
+    <section id="funcoes" class="py-16 bg-white relative overflow-hidden">
+      <!-- Decorative elements inspired by parent company -->
+      <div
+        class="absolute top-0 right-0 -mt-20 -mr-20 w-64 h-64 bg-orange-400/10 rounded-full blur-3xl"
+      ></div>
+      <div
+        class="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"
+      ></div>
+
+      <div class="max-w-5xl mx-auto px-6 relative z-10">
+        <div class="text-center mb-12">
+          <span
+            class="inline-block px-3 py-1 text-sm font-semibold bg-orange-400/10 text-orange-600 rounded-full"
+            >Funções</span
+          >
+          <h2 class="mt-4 text-3xl md:text-4xl font-bold text-gray-900">
+            <span
+              class="bg-gradient-to-r from-orange-500 to-orange-400 bg-clip-text text-transparent"
+              >Tudo o que precisas para te ligares</span
+            >
+          </h2>
+          <p class="text-xl text-gray-700 max-w-2xl mx-auto mt-4">
+            Organiza eventos, participa em experiências exclusivas e cria
+            memórias duradouras com amigos.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div
+            class="bg-white border border-gray-300 rounded-xl p-6 hover:bg-gray-50 transition duration-300 shadow-sm"
+          >
+            <div
+              class="w-12 h-12 bg-orange-500/20 flex items-center justify-center rounded-lg mb-5"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-orange-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+              Planeamento de Eventos
+            </h3>
+            <p class="text-gray-700">
+              Cria e organiza eventos com os teus amigos facilmente.
+            </p>
+          </div>
+
+          <div
+            class="bg-white border border-gray-300 rounded-xl p-6 hover:bg-gray-50 transition duration-300 shadow-sm"
+          >
+            <div
+              class="w-12 h-12 bg-orange-500/20 flex items-center justify-center rounded-lg mb-5"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-orange-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+              Comunicação Integrada
+            </h3>
+            <p class="text-gray-700">
+              Troca mensagens com amigos, em grupos ou eventos privados.
+            </p>
+          </div>
+
+          <div
+            class="bg-white border border-gray-300 rounded-xl p-6 hover:bg-gray-50 transition duration-300 shadow-sm"
+          >
+            <div
+              class="w-12 h-12 bg-orange-500/20 flex items-center justify-center rounded-lg mb-5"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-orange-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+              Disponibilidade
+            </h3>
+            <p class="text-gray-700">
+              Descobre a disponibilidade dos teus amigos com estados visuais.
+            </p>
+          </div>
+
+          <div
+            class="bg-white border border-gray-300 rounded-xl p-6 hover:bg-gray-50 transition duration-300 shadow-sm"
+          >
+            <div
+              class="w-12 h-12 bg-orange-500/20 flex items-center justify-center rounded-lg mb-5"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-orange-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
+                />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+              Bilhetes Exclusivos
+            </h3>
+            <p class="text-gray-700">
+              Acede a eventos com promoções e descontos exclusivos.
+            </p>
+          </div>
+
+          <div
+            class="bg-white border border-gray-300 rounded-xl p-6 hover:bg-gray-50 transition duration-300 shadow-sm"
+          >
+            <div
+              class="w-12 h-12 bg-orange-500/20 flex items-center justify-center rounded-lg mb-5"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-orange-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+              Conexões com Amigos
+            </h3>
+            <p class="text-gray-700">
+              Liga-te a amigos e vê a que eventos eles vão.
+            </p>
+          </div>
+
+          <div
+            class="bg-white border border-gray-300 rounded-xl p-6 hover:bg-gray-50 transition duration-300 shadow-sm"
+          >
+            <div
+              class="w-12 h-12 bg-orange-500/20 flex items-center justify-center rounded-lg mb-5"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-orange-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+              Partilha de Fotos
+            </h3>
+            <p class="text-gray-700">
+              Partilha fotos dos eventos com todos os participantes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- App Screenshot Section -->
+    <section
+      id="app"
+      class="py-20 bg-gradient-to-br from-orange-50 to-orange-100 relative overflow-hidden"
+    >
+      <!-- Decorative elements -->
+      <div
+        class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-orange-400/10 rounded-full blur-3xl"
+        aria-hidden="true"
+      ></div>
+      <div
+        class="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"
+        aria-hidden="true"
+      ></div>
+
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <span
+            class="inline-block px-3 py-1 text-sm font-semibold bg-orange-400/10 text-orange-600 rounded-full"
+            >Aplicação</span
+          >
+          <h2 class="mt-4 text-3xl md:text-4xl font-bold text-gray-900">
+            <span
+              class="bg-gradient-to-r from-orange-500 to-orange-400 bg-clip-text text-transparent"
+              >Desenhado para experiências sociais perfeitas</span
+            >
+          </h2>
+          <p class="text-lg text-gray-700 max-w-2xl mx-auto mt-4">
+            A nossa interface intuitiva torna fácil descobrir eventos,
+            conectar-se com amigos e criar memórias inesquecíveis.
+          </p>
+        </div>
+
+        <div
+          class="max-w-4xl mx-auto flex flex-col lg:flex-row items-center gap-16"
+        >
+          <!-- Phone mockup with better styling -->
+          <div class="lg:w-1/2 order-2 lg:order-1">
+            <div class="relative max-w-xs mx-auto">
+              <!-- Glow effect behind phone -->
+              <div
+                class="absolute inset-0 bg-orange-400/20 rounded-full filter blur-xl transform scale-110 animate-pulse"
+                style="animation-duration: 3s"
+              ></div>
+
+              <!-- Phone frame with better shadows and rotation -->
+              <div
+                class="relative mx-auto bg-gradient-to-tr from-gray-800 to-gray-900 p-[10px] rounded-[24px] shadow-[0_10px_40px_rgba(0,0,0,0.15)] transform"
+              >
+                <!-- Inner bezel -->
+                <div class="bg-black rounded-[16px] overflow-hidden">
+                  <!-- App screenshot with border radius -->
+                  <img
+                    src="nuir.png"
+                    alt="Nuir App Interface"
+                    class="h-auto w-full object-cover"
+                  />
+                </div>
+
+                <!-- Volume buttons -->
+                <div
+                  class="absolute left-[-2px] top-[70px] w-[4px] h-[30px] bg-gray-700 rounded-full"
+                ></div>
+                <div
+                  class="absolute left-[-2px] top-[120px] w-[4px] h-[60px] bg-gray-700 rounded-full"
+                ></div>
+
+                <!-- Power button -->
+                <div
+                  class="absolute right-[-2px] top-[90px] w-[4px] h-[40px] bg-gray-700 rounded-full"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature list with improved styling -->
+          <div class="lg:w-1/2 space-y-10 order-1 lg:order-2">
+            <div class="space-y-6">
+              <div class="flex items-start gap-5">
+                <div
+                  class="flex-shrink-0 bg-gradient-to-br from-orange-500 to-orange-400 p-3 rounded-xl text-white shadow-lg shadow-orange-400/20"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-gray-900">
+                    Design Intuitivo
+                  </h3>
+                  <p class="text-gray-700 mt-2">
+                    Interface simples, limpa e intuitiva, desenhada para para
+                    minimizar a fricção e maximizar experiências
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-5">
+                <div
+                  class="flex-shrink-0 bg-gradient-to-br from-orange-500 to-orange-400 p-3 rounded-xl text-white shadow-lg shadow-orange-400/20"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-gray-900">
+                    Atualizações em Tempo Real
+                  </h3>
+                  <p class="text-gray-700 mt-2">
+                    Recebe notificações instantâneas sobre alterações em eventos
+                    e atividades de amigos, mantendo-te sempre conectado.
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-5">
+                <div
+                  class="flex-shrink-0 bg-gradient-to-br from-orange-500 to-orange-400 p-3 rounded-xl text-white shadow-lg shadow-orange-400/20"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    class="h-6 w-6"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="size-6"
+                    stroke-width="2"
+                  >
+                    <path
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-gray-900">
+                    Privacidade Garantida
+                  </h3>
+                  <p class="text-gray-700 mt-2">
+                    Participa em eventos sem comprometer a tua privacidade, com
+                    canais de comunicação seguros e protegidos por
+                    infraestrutura robusta.
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-5">
+                <div
+                  class="flex-shrink-0 bg-gradient-to-br from-orange-500 to-orange-400 p-3 rounded-xl text-white shadow-lg shadow-orange-400/20"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    class="h-6 w-6"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="size-6"
+                    stroke-width="2"
+                  >
+                    <path
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-gray-900">
+                    Experiências Personalizadas
+                  </h3>
+                  <p class="text-gray-700 mt-2">
+                    Recebe recomendações de eventos baseadas nos teus interesses
+                    e histórico, criando uma experiência única que se adapta ao
+                    teu estilo social.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="sobre" class="py-24 bg-white relative overflow-hidden">
+      <!-- Decorative elements -->
+      <div
+        class="absolute top-0 right-0 -mt-20 -mr-20 w-64 h-64 bg-orange-400/10 rounded-full blur-3xl"
+      ></div>
+      <div
+        class="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"
+      ></div>
+
+      <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-16">
+          <span
+            class="inline-block px-3 py-1 text-sm font-semibold bg-orange-400/10 text-orange-600 rounded-full"
+            >Desde 2025</span
+          >
+          <h2
+            class="mt-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl"
+          >
+            <span
+              class="bg-gradient-to-r from-orange-500 to-orange-400 bg-clip-text text-transparent"
+              >Sobre Nós</span
+            >
+          </h2>
+          <div class="mt-6 max-w-2xl mx-auto">
+            <p class="text-lg text-gray-700 font-light">
+              A Zapping Moments nasceu da convicção de que a tecnologia deve
+              aproximar pessoas, não isolá-las. Criámos uma app que traduz a
+              energia e espontaneidade da cultura jovem em experiências reais
+              que ficam na memória. Somos a ponte entre o mundo digital e os
+              momentos que realmente importam na vida.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid items-center">
+          <!-- Left column: Company info -->
+
+          <!-- <div class="lg:col-span-6 space-y-8">
+
+            <div class="mt-8">
+              <h3 class="text-2xl font-semibold text-orange-600 mb-4">
+                Quem Somos
+              </h3>
+              <p class="text-gray-700 text-lg">
+                Uma equipa jovem e dinâmica com paixão por tecnologia e conexões
+                humanas. Acreditamos que as melhores memórias são criadas no
+                mundo real, e que a tecnologia deve ser uma ponte para essas
+                experiências, não um substituto.
+              </p>
+            </div>
+            
+            <div>
+              <h3 class="text-2xl font-semibold text-orange-600 mb-4">
+                A Nossa Visão
+              </h3>
+              <p class="text-gray-700 text-lg">
+                Somos uma empresa portuguesa nascida em 2025 com o propósito de
+                reimaginar como a tecnologia pode unir pessoas no mundo real,
+                não apenas no digital.
+              </p>
+            </div>
+
+            <div class="mt-8">
+              <h3 class="text-2xl font-semibold text-orange-600 mb-4">
+                A Nossa Missão
+              </h3>
+              <p class="text-gray-700 text-lg">
+                Criar aplicações que rompem com o isolamento digital e motivam
+                os jovens a viver experiências reais através de eventos
+                extraordinários e conexões autênticas.
+              </p>
+            </div>
+
+            
+          </div> -->
+
+          <!-- Right column: Image with overlapping cards -->
+          <div class="lg:col-span-6 relative">
+            <div
+              class="relative rounded-2xl overflow-hidden shadow-2xl shadow-orange-500/10"
+            >
+              <img
+                src="team.avif"
+                alt="Equipa Zapping Moments"
+                class="w-full h-96 object-cover"
+              />
+
+              <!-- Stats overlay -->
+              <div
+                class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-gray-900 to-transparent pt-20 pb-6 px-6"
+              >
+                <div class="grid grid-cols-3 gap-4 text-center">
+                  <div>
+                    <p class="text-3xl font-bold text-white">2025</p>
+                    <p class="text-sm text-gray-300">Fundação</p>
+                  </div>
+                  <div>
+                    <p class="text-3xl font-bold text-white">6</p>
+                    <p class="text-sm text-gray-300">Membros</p>
+                  </div>
+                  <div>
+                    <p class="text-3xl font-bold text-white">1</p>
+                    <p class="text-sm text-gray-300">Aplicações</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating feature cards -->
+            <div
+              class="absolute top-10 -left-5 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-5 shadow-lg transform rotate-2 w-56"
+            >
+              <div class="flex items-center">
+                <div class="p-2 bg-white/20 rounded-lg">
+                  <svg
+                    class="h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                    />
+                  </svg>
+                </div>
+                <h4 class="ml-2 text-sm font-medium text-white">
+                  Cultura Jovem
+                </h4>
+              </div>
+              <p class="mt-2 text-xs text-white/90">
+                Apps inspiradas na cultura teen e nas suas tendências sociais.
+              </p>
+            </div>
+
+            <div
+              class="absolute -right-5 top-20 bg-gradient-to-br from-orange-400 to-orange-500 rounded-xl p-5 shadow-lg transform -rotate-3 w-56"
+            >
+              <div class="flex items-center">
+                <div class="p-2 bg-white/20 rounded-lg">
+                  <svg
+                    class="h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"
+                    />
+                  </svg>
+                </div>
+                <h4 class="ml-2 text-sm font-medium text-white">Parcerias</h4>
+              </div>
+              <p class="mt-2 text-xs text-white/90">
+                Colaboramos com bares, festivais e comunidades locais.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Features section -->
+        <div class="mt-12">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div
+              class="bg-white border border-gray-300 rounded-xl p-6 hover:bg-gray-50 transition duration-300 shadow-sm"
+            >
+              <div
+                class="w-12 h-12 bg-orange-500/20 flex items-center justify-center rounded-lg mb-5"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-orange-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                Experiências Únicas
+              </h3>
+              <p class="text-gray-700">
+                Festas temáticas, encontros culturais e eventos espontâneos que
+                ficam na memória.
+              </p>
+            </div>
+
+            <div
+              class="bg-white border border-gray-300 rounded-xl p-6 hover:bg-gray-50 transition duration-300 shadow-sm"
+            >
+              <div
+                class="w-12 h-12 bg-orange-500/20 flex items-center justify-center rounded-lg mb-5"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-orange-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                Comunidade Real
+              </h3>
+              <p class="text-gray-700">
+                Superamos o isolamento digital ao criar ligações significativas
+                entre jovens com interesses semelhantes.
+              </p>
+            </div>
+
+            <div
+              class="bg-white border border-gray-300 rounded-xl p-6 hover:bg-gray-50 transition duration-300 shadow-sm"
+            >
+              <div
+                class="w-12 h-12 bg-orange-500/20 flex items-center justify-center rounded-lg mb-5"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-orange-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                Tech Humana
+              </h3>
+              <p class="text-gray-700">
+                Usamos a tecnologia para aproximar pessoas no mundo real, não
+                para as manter coladas aos ecrãs.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 relative overflow-hidden">
+      <!-- Background with same style as hero -->
+      <div class="absolute inset-0 z-0">
+        <!-- Base gradient -->
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-orange-500 to-orange-600"
+        ></div>
+
+        <!-- Texture overlay - circles representing social gatherings -->
+        <div class="absolute inset-0 opacity-10" x-data="pulsingCircles">
+          <div
+            class="absolute h-40 w-40 rounded-full bg-white top-10 left-10 animate-pulse-1"
+          ></div>
+          <div
+            class="absolute h-64 w-64 rounded-full bg-white top-20 right-20 animate-pulse-2"
+          ></div>
+          <div
+            class="absolute h-32 w-32 rounded-full bg-white bottom-10 left-1/4 animate-pulse-3"
+          ></div>
+          <div
+            class="absolute h-56 w-56 rounded-full bg-white -bottom-20 right-1/3 animate-pulse-4"
+          ></div>
+          <div
+            class="absolute h-48 w-48 rounded-full bg-white -top-10 left-1/3 animate-pulse-5"
+          ></div>
+        </div>
+
+        <!-- Noise texture for added depth -->
+        <div
+          class="absolute inset-0 opacity-30 mix-blend-overlay bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMjAwdjIwMEgweiIgZmlsbD0iI2ZmZiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')]"
+        ></div>
+      </div>
+
+      <!-- Content -->
+      <div class="max-w-4xl mx-auto px-6 text-center relative z-10 text-white">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">
+          Pronto para começar a conectar-te?
+        </h2>
+        <p class="text-xl mb-8">
+          Descarrega a NUIR hoje e transforma a maneira como crias planos.
+        </p>
+        <div class="flex flex-row justify-center gap-4">
+          <button
+            class="relative border-4 border-transparent bg-white/80 text-orange-600 px-3.5 py-2 rounded-xl font-semibold hover:bg-orange-100 group"
+          >
+            <div class="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-2 transition-transform duration-300 ease-in-out group-hover:-translate-y-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                />
+              </svg>
+              <span>Descarregar para iOS</span>
+            </div>
+            <div class="absolute -top-3 -right-3">
+              <div
+                class="waiting-badge text-white text-xs font-bold py-1 px-2 rounded-bl-lg rounded-tr-lg transform rotate-12 hover-wiggle shadow-md"
+              >
+                Em breve
+              </div>
+            </div>
+          </button>
+          <button
+            class="relative border-4 border-transparent bg-white/80 text-orange-600 px-3.5 py-2 rounded-xl font-semibold hover:bg-orange-100 group"
+          >
+            <div class="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-2 transition-transform duration-300 ease-in-out group-hover:-translate-y-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                />
+              </svg>
+              <span>Descarregar para Android</span>
+            </div>
+            <div class="absolute -top-3 -right-3">
+              <div
+                class="waiting-badge text-white text-xs font-bold py-1 px-2 rounded-bl-lg rounded-tr-lg transform rotate-12 hover-wiggle shadow-md"
+              >
+                Em breve
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto" class="bg-gray-900 py-12">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8">
+        <div class="xl:grid xl:grid-cols-3 xl:gap-8">
+          <div class="space-y-8">
+            <div class="flex items-center gap-2">
+              <img src="nuir.svg" alt="Nuir Logo" class="h-8 w-8" />
+              <span class="font-bold text-xl text-white">nuir</span>
+            </div>
+            <p class="text-sm leading-6 text-gray-300">
+              Conectamos pessoas através de experiências sociais reais.
+            </p>
+            <div class="flex space-x-6">
+              <!-- <a href="#" class="text-gray-400 hover:text-orange-500">
+                <span class="sr-only">Twitter</span>
+                <svg
+                  class="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"
+                  ></path>
+                </svg>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-orange-500">
+                <span class="sr-only">Facebook</span>
+                <svg
+                  class="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"
+                  ></path>
+                </svg>
+              </a> -->
+              <a
+                href="https://www.instagram.com/nuir_app"
+                class="text-gray-400 hover:text-orange-500"
+              >
+                <span class="sr-only">Instagram</span>
+                <svg
+                  class="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
+            <div class="md:grid md:grid-cols-2 md:gap-8">
+              <div></div>
+              <div></div>
+            </div>
+            <div>
+              <h3 class="text-sm font-semibold leading-6 text-white">
+                Contacto
+              </h3>
+              <ul role="list" class="mt-6 space-y-4">
+                <li class="flex">
+                  <svg
+                    class="h-6 w-6 flex-none text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+                    />
+                  </svg>
+                  <span class="ml-3 text-sm leading-6 text-gray-300"
+                    >geral@zappingmoments.com</span
+                  >
+                </li>
+                <li class="flex">
+                  <svg
+                    class="h-6 w-6 flex-none text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
+                    />
+                  </svg>
+                  <span class="ml-3 text-sm leading-6 text-gray-300"
+                    >+351 937 591 161</span
+                  >
+                </li>
+                <li class="flex">
+                  <svg
+                    class="h-6 w-6 flex-none text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+                    />
+                  </svg>
+                  <span class="ml-3 text-sm leading-6 text-gray-300"
+                    >Rua Antero de Figueiredo 2 2º frente<br />
+                    1700-041 Lisboa, Portugal</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="mt-16 border-t border-gray-800 pt-8 sm:mt-20 lg:mt-24">
+          <p class="text-xs leading-5 text-gray-400">
+            &copy; 2025 Nuir. Todos os direitos reservados.
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
